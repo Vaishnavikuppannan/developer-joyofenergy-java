@@ -3,6 +3,7 @@ package uk.tw.energy.domain;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+
 public class ElectricityReading {
 
     private Instant time;
@@ -21,5 +22,13 @@ public class ElectricityReading {
 
     public Instant getTime() {
         return time;
+    }
+
+    @Override
+    public String toString() {
+        return "ElectricityReading{" +
+                "time=" + time +
+                ", reading=" + reading +
+                '}';
     }
 }

@@ -13,6 +13,7 @@ import uk.tw.energy.domain.MeterReadings;
 import uk.tw.energy.service.MeterReadingService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -27,26 +28,24 @@ public class MeterReadingController {
 
     @PostMapping("/store")
     public ResponseEntity storeReadings(@RequestBody MeterReadings meterReadings) {
-        if (!isMeterReadingsValid(meterReadings)) {
+        if (isInvalidMeterReading(meterReadings)) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        
         meterReadingService.storeReadings(meterReadings.getSmartMeterId(), meterReadings.getElectricityReadings());
         return ResponseEntity.ok().build();
     }
 
-    private boolean isMeterReadingsValid(MeterReadings meterReadings) {
+    private boolean isInvalidMeterReading(MeterReadings meterReadings) {
         String smartMeterId = meterReadings.getSmartMeterId();
         List<ElectricityReading> electricityReadings = meterReadings.getElectricityReadings();
-        return smartMeterId != null && !smartMeterId.isEmpty()
-                && electricityReadings != null && !electricityReadings.isEmpty();
+        return smartMeterId == null  || Objects.isNull(electricityReadings)  || electricityReadings.isEmpty();
     }
+
 
     @GetMapping("/read/{smartMeterId}")
     public ResponseEntity readReadings(@PathVariable String smartMeterId) {
-        Optional<List<ElectricityReading>> readings = meterReadingService.getReadings(smartMeterId);
-        return readings.isPresent()
-                ? ResponseEntity.ok(readings.get())
-                : ResponseEntity.notFound().build();
+        return meterReadingService.getReadings(smartMeterId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
