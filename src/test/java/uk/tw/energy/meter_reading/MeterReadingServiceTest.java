@@ -1,7 +1,8 @@
-package uk.tw.energy.service;
+package uk.tw.energy.meter_reading;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.tw.energy.meter_reading.MeterReadingService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
