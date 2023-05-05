@@ -1,4 +1,6 @@
-package uk.tw.energy.domain;
+package uk.tw.energy.meter_reading;
+
+import uk.tw.energy.domain.ElectricityReading;
 
 import java.util.List;
 
